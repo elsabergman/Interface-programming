@@ -1,6 +1,8 @@
 $(function (){ 
 //Requesting data using jQuery 
 var $dept = $('#dept'); //Id of html div
+var username = 'jorass';
+var password = 'jorass';
 $.ajax({
 	method: 'GET',
 	url: 'http://pub.jamaica-inn.net/fpdb/api.php?username=' + username + '&password=' + password + '&action=iou_get',
