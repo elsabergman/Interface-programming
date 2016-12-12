@@ -108,12 +108,12 @@ success: function(login) {
       
       AllBevFlag[i] = 1; //if 1 --> alcoholic
       
-      else {
+  }else {
           AllBevFlag[i] = 0; // if 0 --> non-alcoholic
       }
 
 
-  }
+  
       localStorage.setItem("AllBevFlag", AllBevFlag);
 
 }
