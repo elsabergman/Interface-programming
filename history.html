@@ -2,6 +2,7 @@
 <html>
 
 <head>
+	<meta charset="utf-8">
     <title>History</title>
     <link rel="stylesheet" type="text/css" href="css/stylesheet.CSS">
 <script src="js/jquery-3.1.1.min.js"></script>
@@ -13,6 +14,7 @@
     <script src="js/jquery-ui-1.12.1.custom/jquery-ui.js"></script> <!-- This page uses the UI library -->
     <script src="js/javascript_Dept.js"></script>
 	<script src="js/history_script.js"></script>
+	<script src="js/translations.js"></script>
 </head>
 
 <body class="bodyMain">
@@ -23,12 +25,12 @@
               <div id="textHeader">Jamaica<span>Inn</span></div>
                 <ul class="nav">
                     
-        <li> <a  href="main.html">Beverages</a></li>
-        <li> <a href="history.html"  class="current">Purchase History</a></li>
-        <li> <div id="viewDept">Dept</div></li>
+        <li> <a  href="main.html" class ="translatable" data-key ="beverages">Beverages</a></li>
+        <li> <a href="history.html"class="current translatable" data-key="purchaseHistory">Purchase History</a></li>
+        <li> <div id="viewDept"class="translatable" data-key="dept">Dept</div></li>
         <div id="admin_buttons" style="display: inherit;">
-        <li> <a href="allbeverages.html" id="bev_admin">Manage Beverages</a></li>
-        <li> <a href="users.html" id="users_admin">Manage Users</a></li>
+        <li> <a href="allbeverages.html" id="bev_admin"class = "translatable" data-key="manageBeverages">Manage Beverages</a></li>
+        <li> <a href="users.html" id="users_admin"class = "translatable" data-key ="manageUsers">Manage Users</a></li>
         </div>
         </ul>
         <div id="languageBar">
@@ -36,10 +38,10 @@
             <div id="selectEN" data-lang="sv"><img src="http://barnepalliasjon.no/wp-content/themes/ffb/images/english.png" style="height: 2vw;width: 2vw;">EN</div>
 
         </div>
-        <div id="user_info" ">
+        <div id="user_info" >
                     <img src ="http://www.iconarchive.com/download/i93784/custom-icon-design/silky-line-user/user.ico" id="login_pic" alt="login" >
                     <div id ="login_id" class="login_id"></div>
-                        <a href ="login.html" id="logout">log out</a></div>
+                        <a href ="login.html" id="logout"class = "translatable" data-key="logOut">log out</a></div>
 
                 
             </div>
@@ -50,9 +52,9 @@
 
 <div class="table">
   	<div class="tableHeader">
-    		<div class="col">Date</div>
-    		<div class="col">Beverage</div>
-    		<div class="col">Price (kr) </div>
+    		<div class="col translatable" data-key="date">Date</div>
+    		<div class="col translatable" data-key="beverage">Beverage</div>
+    		<div class="col translatable" data-key="price">Price (kr) </div>
   	</div>
 
  	<div class="tableContent" id="history"></div>

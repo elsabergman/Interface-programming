@@ -1,16 +1,18 @@
+var username = localStorage.getItem('userID');
+var password = localStorage.getItem('password');
 /*---history ---*/
 $(function (){ 
 //Requesting data using jQuery 
 var $history = $('#history'); //Id of html div
-var username = localStorage.getItem('username');
 
-var password = localStorage.getItem('password');
-     if (username == 'jorass' || username == 'ervtod' || username == 'hirchr' || username == 'saksru' || 
-            username == 'svetor') {
-         $('bev_admin').show();
-         $('users_admin').show();
+    
+   if ( (username != 'jorass') && (username != 'ervtod') && (username != 'hirchr') && (username != 'saksru') && (username != 'svetor')) {
+       
+         document.getElementById('admin_buttons').style.visibility = 'hidden';
+        
          
      }
+
    
 $.ajax({
 	method: 'GET',
@@ -27,7 +29,7 @@ success: function(main) {
     var first_name = main.payload[0].first_name;
     var last_name = main.payload[0].last_name;
      document.querySelector('.login_id').innerHTML = first_name +" "+ last_name;
-    //document.querySelector('.login_id').innerHTML = last_name;
+    
     
 }
         });

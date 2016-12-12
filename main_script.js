@@ -1,6 +1,5 @@
-// Lista snyggare i vår cart 
-// varför tar den bort den jag INTE klickar på????? Verkar som att den tar bort allt utom den jag vill.
-
+var username = localStorage.getItem('userID'); //save username and password to see which ones should see all buttons 
+var password = localStorage.getItem('password');
 /*--global variables---*/
 var total_price = 0;
 var name ="";
@@ -13,11 +12,10 @@ var purchase_array = new Array;
 $(function (){ 
 //Requesting data using jQuery 
 var $main = $('#main'); //Id of html div
-var username = localStorage.getItem('username'); //save username and password to see which ones should see all buttons 
-var password = localStorage.getItem('password');
-    
-     if (!(username == 'jorass' || username == 'ervtod' || username == 'hirchr' || username == 'saksru' && 
-            username == 'svetor')) {
+
+  
+     if ( (username != 'jorass') && (username != 'ervtod') && (username != 'hirchr') && (username != 'saksru') && 
+            (username != 'svetor')) {
          document.getElementById('admin_buttons').style.visibility = 'hidden';
         
          
@@ -56,7 +54,7 @@ success: function(main){
 success: function(main) {
     var first_name = main.payload[0].first_name;
     var last_name = main.payload[0].last_name;
-     document.querySelector('.login_id').innerHTML = first_name +" "+ last_name;
+     document.querySelector('.login_id').innerHTML = first_name // "+ last_name;
     
 }
         });
@@ -68,9 +66,10 @@ success: function(main) {
     var BevPrice = localStorage.getItem("prices").split(',');
     var BevName = localStorage.getItem("names").split(',');
     var BevID = localStorage.getItem("ID").split(',');
-    var NonAlcName = localStorage.getItem("NoAlcName").split(',');
+   /* var NonAlcName = localStorage.getItem("NoAlcName").split(',');
     var NonAlcStock = localStorage.getItem("NoAlcStock").split(',');
-     var NonAlcPrice = localStorage.getItem("NoAlcPrices").split(',');
+     var NonAlcPrice = localStorage.getItem("NoAlcPrices").split(',');*/
+    var Flag = localStorage.getItem("AllBevFlag").split(",");
 
     
     var id_noAlc = 52;
@@ -81,7 +80,7 @@ success: function(main) {
     $.each(main.payload, function(i, its)  
            
 {     
-     if ( (BevStock[i] <200 && BevStock[i] > 0) && (BevName[i]!= "")  && (beer_count < 20)) {
+     if ( (BevStock[i] > 0) && (BevName[i]!= "")  && (beer_count < 17) && Flag[i] == 0) {
          
          names += BevName[i] + ',' ;
          prices += BevPrice[i] +',';
@@ -99,35 +98,38 @@ success: function(main) {
         .attr("action","main.html") .attr("method","post") //set the form attributes
         //add in all the needed input elements
 
-/*add to vending machine */         
+/*add to vending machine */  
 $main.append( '<div class="small_box" data-value="' + its.beer_id + '">' +
             '<input type="text" class ="values" id="'+its.beer_id+'" value="0"/>' +
             '<div class="small_box_text" id="'+its.beer_id+'Name">'+  BevName[i]+'</div>' +
-            '<div class="small_box_text" id="'+BevID[i]+"Stock"+'" data-value="'+ BevStock[i] +'">'+ BevStock[i] + " left"+'</div> ' +     
-            '<div class="small_box_text">'+ "price: " + BevPrice[i]+ " kr" + '</div>' + 
+            '<div class="small_box_text" id="'+its.beer_id+"Stock"+'" data-value="'+ BevStock[i] +'">'+ BevStock[i] + " left"+'</div> ' +     
+            '<div class="small_box_text" id="'+its.beer_id+"Price"+'" data-value="'+ BevPrice[i] +'">'+ BevPrice[i] + " kr"+'</div>'  + 
             '<input type="button" id="'+its.beer_id+'" class="btn_increase" value="+"></input>' +
             '<input type="button" id="'+its.beer_id+'" class="btn_decrease" value="-"></input></div>' ); 
              beer_count++;
         id_values++;
          id_inc_button++;
          id_dec_button++;
-                 
+        
+ }
          
-     }  
-    });
-   
- $.each(main.payload, function(i, its)  {
+     });
+ 
+  $.each(main.payload, function(i, its)  
+           
+{     if ( (BevStock[i] > 0) && (BevName[i]!= "")  && (beer_count_nonAlc < 3) && (Flag[i]==1)) {
+
     /*append non alcoholic beverages*/
-     if (beer_count_nonAlc < 3){
-         if (NonAlcStock[i] > 10) {
-             NonAlcStock[i] = 10;
+         if (BevStock[i] > 10) {
+             BevStock[i] = 10;
          }
-         $('#non-alcohol').append('<div class="small_box">' +
-                                   '<input type="text" class ="values" id="'+id_noAlc+'" value="0"/>' +
-                             '<div class="small_box_text">' + NonAlcName[i]+'</div>' +
-                             '<div class="small_box_text">'+  NonAlcStock[i] +  " left" + '</div> '   + 
-                             '<div class="small_box_text">'+ NonAlcPrice[i] + " kr" + '</div>' + '<input type="button" id="'+inc_noAlc+'" class="btn_increase" value="+">' + '</input>' +
-             '<input type="button" id="'+dec_noAlc+'" class="btn_decrease" value="-">' +' </input>' + '</div>');
+       $('#non-alcohol').append('<div class="small_box" data-value="' + its.beer_id + '">' +
+            '<input type="text" class ="values" id="'+its.beer_id+'" value="0"/>' +
+            '<div class="small_box_text" id="'+its.beer_id+'Name">'+  BevName[i]+'</div>' +
+            '<div class="small_box_text" id="'+BevID[i]+"Stock"+'" data-value="'+ BevStock[i] +'">'+ BevStock[i] + " left"+'</div> ' +     
+            '<div class="small_box_text" id="'+its.beer_id+"Price"+'" data-value="'+ BevPrice[i] +'">'+ BevPrice[i] +" kr"+'</div>'  + 
+            '<input type="button" id="'+its.beer_id+'" class="btn_increase" value="+"></input>' +
+            '<input type="button" id="'+its.beer_id+'" class="btn_decrease" value="-"></input></div>' ); 
     
       beer_count_nonAlc++;
       inc_noAlc++;
@@ -135,45 +137,10 @@ $main.append( '<div class="small_box" data-value="' + its.beer_id + '">' +
       id_noAlc++;
     
          beer_id += its.beer_id +',';
-        
      }
- 
- });
+     });
       
- $('#55').click(function() {
-             
-        incrementValue("52",beer_id[17],NonAlcName[0],NonAlcStock[0], NonAlcPrice[0]);
-    });
-     
-    $('#58').click(function() {
-       
-        decreaseValue("52",beer_id[17],NonAlcName[0],NonAlcStock[0], NonAlcPrice[0]);
- 
-    });
-     $('#56').click(function() {
-        
-        incrementValue("53",beer_id[18],NonAlcName[1],NonAlcStock[1], NonAlcPrice[1]);
-    });
-     
-    $('#59').click(function() {
-      
-        decreaseValue("53",beer_id[18],NonAlcName[1],NonAlcStock[1], NonAlcPrice[1]);
- 
-    });
-     $('#57').click(function() {
-       
-        incrementValue("54",beer_id[19],NonAlcName[2],NonAlcStock[2], NonAlcPrice[2]);
-    });
-     
-    $('#60').click(function() {
-   
-        decreaseValue("54",beer_id[19],NonAlcName[2],NonAlcStock[2], NonAlcPrice[2]);
- 
-    });
-    
-    
-  
-    /*super ugly! will implement loop here but don't know how to do it right now. This is to give every button a different id*/
+
     
      names = names.split(",");
  
@@ -183,228 +150,124 @@ $main.append( '<div class="small_box" data-value="' + its.beer_id + '">' +
     prices = prices.split(",");
  
 
-
+/*----put chosen beer into the cart and update the stock and total accordingly--*/
     $('.btn_increase').click(function() {
+        var BevStock = localStorage.getItem("count").split(',');
+         var BevID = localStorage.getItem("ID").split(',');
+        
         var id = $(this).attr('id');
         var value = parseInt($("#"+id).val()); //get textbox value
         var stockCount = parseInt($("#"+id+"Stock").data('value'));
+        var index = BevID.indexOf(id);
+        var theStock = BevStock[index];
+        
+        
+        var price = $("#"+id+"Price").data('value');
         var beerName = $("#"+id+"Name").text();
-        if ((value+1) <= stockCount )
+       
+        if ((value+1) <= stockCount )    
         {
             if (value == 0)
-            {
+            { 
+                
             $("#"+id).val(value+1);
+                
+                //$("#"+id+"Stock").text((stockCount - (value+1)) + " left");
              $('#cart').append('<div class="cartrow" id="'+id+'" >' +
                               '<div id="cartname" class="cartcol">'+beerName+'</div>' +
                               '<div id="cartamount" class="'+id+'">x '+(value+1)+'</div>' +
-                              '</div>')
+                              '</div>');
+                
+                 if (theStock > 10) {
+            
+            BevStock[index] = 9;
+            $("#"+id+"Stock").text(parseInt(BevStock[index])-1 + " left");
+        }
+                else {
+                     $("#"+id+"Stock").text(parseInt(theStock)-1 + " left");
+                    BevStock[index] = parseInt(theStock)- 1;
+                }
+        
             }
             else if (value > 0)
             {
+                    if (theStock > 10) {
+                 BevStock[index] = 9;
+            $("#"+id+"Stock").text(parseInt(BevStock[index])-1 + " left");
+        }
+                else {
+                     $("#"+id+"Stock").text(parseInt(theStock)-1 + " left");
+                    BevStock[index] = parseInt(theStock) - 1;
+                }
                 $("#"+id).val(value+1);
                 $('#cartamount.'+id).text('x '+(value+1));
+               // $("#"+id+"Stock").text((stockCount - (value+1)) + " left");
             }
-
-
+            purchase_array += beerName + "\n";
+            total_price += +price;
+            localStorage.setItem("count",BevStock);
+             document.getElementById("total_number").innerHTML = total_price;
         }
         
+        //Add price to the total
+     
+        
+        
     });
-
+/*---Remove the chosen beer from the cart and update the stock and total accordingly---*/ 
     $('.btn_decrease').click(function() {
-        var id = $(this).attr('id');
+           var BevStock = localStorage.getItem("count").split(',');
+         var BevID = localStorage.getItem("ID").split(',');
+           var id = $(this).attr('id');
+         var idx = BevID.indexOf(id);
+
+     
         var value = parseInt($("#"+id).val()); //get textbox value
         var stockCount = parseInt($("#"+id+"Stock").data('value'));
+        var price = $("#"+id+"Price").data('value');
         var beerName = $("#"+id+"Name").text();
+         var theStock = BevStock[idx];
+
         if ((value-1) >= 0)
         {
             if(value == 1)
             {
             $("#"+id).val(value-1);
             $('#'+id+'.cartrow').remove();
-            }
+            $("#"+id+"Stock").text(parseInt(theStock) +1 + " left");
+            BevStock[idx]++;
+                purchase_array = "";
+                total_price = 0;
+                document.getElementById("total_number").innerHTML = total_price;
+                }
+            
             else if (value > 1)
             {
                 $("#"+id).val(value-1);
                 $('#cartamount.'+id).text('x '+(value-1));
+                  //  $("#"+id+"Stock").text(parseInt(theStock) +1 + " left");
+                   // BevStock[idx]++;
+                //$("#"+id+"Stock").text((stockCount + (value+1)) + " left");
+               // $("#"+id+"Stock").data('value', (stockCount + (value+1)));
+                purchase_array = purchase_array.split('\n');
+                  var index = purchase_array.indexOf(beerName,1);
+                  purchase_array.splice(index,1);
+                total_price -= parseFloat(price);
+                document.getElementById("total_number").innerHTML = total_price;
+            
             }
-        }
+                
+                 
+            localStorage.setItem("count",BevStock);
+           
+           
+    }
+              
         
     });
   
 
-    $('#18').click(function() {
-        incrementValue("1", beer_id[0], names[0],amounts[0],prices[0]);
-        
-    });
-     
-    $('#35').click(function() {
-         
-        decreaseValue("1",beer_id[0], names[0],amounts[0],prices[0]);
- 
-    });
-    $('#19').click(function() {
-       
-        incrementValue("2",beer_id[1], names[1], amounts[1],prices[1]);
-    });
-     
-    $('#36').click(function() {
-       
-        decreaseValue("2",beer_id[1],names[1],amounts[1],prices[1]);
- 
-    });
-     $('#20').click(function() {
-        
-        incrementValue("3",beer_id[2], names[2],amounts[2],prices[2]);
-         
-    });
-     
-    $('#37').click(function() {
-       
-        decreaseValue("3",beer_id[2], names[2],amounts[2],prices[2]);
- 
-    });
-     $('#21').click(function() {
-  
-        incrementValue("4",beer_id[3],names[3],amounts[3],prices[3]);
-    });
-     
-    $('#38').click(function() {
    
-        decreaseValue("4",beer_id[3],names[3],amounts[3],prices[3]);
- 
-    });
-    $('#22').click(function() {
-
-        incrementValue("5",beer_id[4], names[4],amounts[4],prices[4]);
-    });
-     
-    $('#39').click(function() {
-   
-        decreaseValue("5",beer_id[4], names[4],amounts[4],prices[4]);
- 
-    });
-     $('#23').click(function() {
-   
-        incrementValue("6",beer_id[5], names[5],amounts[5],prices[5]);
-    });
-     
-    $('#40').click(function() {
-     
-        decreaseValue("6", beer_id[5],names[5],amounts[5],prices[5]);
- 
-    });
-     $('#24').click(function() {
-  
-        incrementValue("7",beer_id[6], names[6],amounts[6],prices[6]);
-    });
-     
-    $('#41').click(function() {
-  
-        decreaseValue("7",beer_id[6],names[6],amounts[6],prices[6]);
- 
-    });
-    $('#25').click(function() {
-       
-        incrementValue("8", beer_id[7],names[7],amounts[7],prices[7]);
-    });
-     
-    $('#42').click(function() {
-     
-        decreaseValue("8",beer_id[7],names[7],amounts[7],prices[7]);
- 
-    });
-     $('#26').click(function() {
-   
-        incrementValue("9",beer_id[8],names[8],amounts[8],prices[8]);
-    });
-     
-    $('#43').click(function() {
-     
-        decreaseValue("9",beer_id[8],names[8],amounts[8],prices[8]);
- 
-    }); 
-    
-    
-    $('#27').click(function() {
-
-        incrementValue("10",beer_id[9],names[9],amounts[9],prices[9]);
-    });
-
-     
-    $('#44').click(function() {
-    
-        decreaseValue("10",beer_id[9],names[9],amounts[9],prices[9]);
- 
-    });
-    $('#28').click(function() {
-        
-        incrementValue("11",beer_id[10],names[10],amounts[10],prices[10]);
-    });
-     
-    $('#45').click(function() {
-        
-        decreaseValue("11",beer_id[10],names[10],amounts[10],prices[10]);
-    });
-     $('#29').click(function() {
-        
-        incrementValue("12",beer_id[11],names[11], amounts[11],prices[11]);
-    });
-     
-    $('#46').click(function() {
-     
-        decreaseValue("12",beer_id[11],names[11],amounts[11],prices[11]);
- 
-    });
-     $('#30').click(function() {
-    
-        incrementValue("13",beer_id[12],names[12],amounts[12],prices[12]);
-    });
-     
-    $('#47').click(function() {
-     
-        decreaseValue("13", beer_id[12],names[12],amounts[12],prices[12]);
- 
-    });
-    $('#31').click(function() {
-       
-        incrementValue("14",beer_id[13], names[13],amounts[13],prices[13]);
-    });
-     
-    $('#48').click(function() {
-       
-        decreaseValue("14",beer_id[13], names[13],amounts[13],prices[13]);
- 
-    });
-     $('#32').click(function() {
-     
-        incrementValue("15",beer_id[14],names[14],amounts[14],prices[14]);
-    });
-     
-    $('#49').click(function() {
-      
-        decreaseValue("15",beer_id[14],names[14],amounts[14],prices[14]);
- 
-    });
-     $('#33').click(function() {
-  
-        incrementValue("16",beer_id[15],names[15],amounts[15],prices[15]);
-    });
-     
-    $('#50').click(function() {
-     
-        decreaseValue("16",beer_id[15],names[15],amounts[15],prices[15]);
- 
-    });
-    $('#34').click(function() {
-       
-        incrementValue("17",beer_id[16],names[16],amounts[16],prices[16]);
-    });
-     
-    $('#51').click(function() {
-    
-        decreaseValue("17",beer_id[16],names[16],amounts[16], prices[16]); 
- 
-    });
     
 }
        });
@@ -454,62 +317,22 @@ window.onclick = function(event) {
 }
 
 
-/*---confirm purchase. When click on BUY, the user can see what he/she bought, what the total was as well as new credit. The new stock is then shown in the correct box--*/
+/*---confirm purchase. When click on BUY, the user can see what he/she bought, what the total was as well as new credit.--*/
 function confirmPurchase() {
 
-    //the stock of the available beers should change after buying something. 
-    var BevID = localStorage.getItem("ID").split(',');
-     var BevStock = localStorage.getItem("count").split(',');
-     var BevName = localStorage.getItem("names").split(',');
-    var NonAlcName = localStorage.getItem("NoAlcName").split(',');
-    var NonAlcStock = localStorage.getItem("NoAlcStock").split(',');
-   // purchase_array2 = purchase_array.split(",");
+  
     
-  console.log(localStorage.getItem("count"));
-    
-
- for(i=0; i<purchase_array.length-1; i++) {
-     index = BevName.indexOf(purchase_array[i]);
-alert(purchase_array.indexOf(NonAlcName[i]));
-     alert(BevName[index]);
-     alert(purchase_array[i]);
-     if ((purchase_array.indexOf(NonAlcName[i]) == -1) && (purchase_array[i] == BevName[index])) {
-         var count = BevStock[index];
-         if (count > 10) { //if stock is really more than 10
-             var new_count = 9;
-            BevStock[index] = new_count;
-         }else {
-         var new_count = count - 1; 
-         BevStock[index] = new_count;
-
-         }
-
-          document.getElementById(BevID[index]+"Stock").innerHTML = new_count +" left";
-       
-
-     } else if (purchase_array.indexOf(NonAlcName[i]) > -1) {
-         alert("HRJ");
-         var count = NonAlcStock[i];
-         if (count > 10){
-             var new_count = 9;
-             NonAlcStock[i] = new_count;
-         }
-            var new_count = count - 1; 
-         NonAlcStock[index] = new_count;
-     }
-      document.getElementById(BevID[index]+"Stock").innerHTML = new_count +" left";
- }
-
-    window.confirm("Purchase confirmed!\n\n Here is what you bought:\n\n" + purchase_array + "\nYour total was " + total_price +" kr");
+    window.confirm("Purchase confirmed!\n\n Here is what you bought:\n\n" + purchase_array+ "\nYour total was " + total_price +" kr");
     clearAll();
     purchase_array ="";
-     localStorage.setItem("count", BevStock);
+    total_price =""; 
+
     
 }
           
   
 /*-- increase number of beers person wants to buy. increments number in value box by one and makes number red to make it easier for the customer to see that he/she has picked that certain beer. Also adds to total price. --*/
-function incrementValue(number, beer_id,namn, count, price)
+/*function incrementValue(number, beer_id,namn, count, price)
 {
   
     
@@ -543,10 +366,10 @@ if (count == 1 && (purchase_array.indexOf(namn) > -1)) { //if it is out of stock
    
 
 }
-
+*/
 
 /*--decrease number of beers person wants to buy --*/
-function decreaseValue(number,beer_id, name,count,price)
+/*function decreaseValue(number,beer_id, name,count,price)
 {
    alert(purchase_array.length);
     for(i=0; i<purchase_array.length; i++ ) {
@@ -579,10 +402,27 @@ function decreaseValue(number,beer_id, name,count,price)
              document.getElementById(number).value = value;
     my_beer_id = ""
         }
-        
+        */
 /*-- clear button, removes all beers in the cart and resets the number in each box to zero as well as makes the numbers black again. Also sets the total amount to zero --*/
 function clearAll(){
-     $('#text').html("");
+    
+    //To make stock go back to how it was before adding to cart
+   /* purchase_array = purchase_array.split(",");
+      var BevStock = localStorage.getItem("count").split(',');
+         var BevID = localStorage.getItem("ID").split(',');
+        var BevName = localStorage.getItem("names").split(',');
+    for(i=0; i<purchase_array.length; i++) {
+      
+        
+        var index = BevName.indexOf(purchase_array[i]);
+        alert(index);
+        var id = BevID[index];
+            $("#"+id+"Stock").text(parseInt(BevStock[index]) +1 + " left");
+            BevStock[index]++;
+            localStorage.setItem("count", BevStock);
+        
+    }*/
+      $('.cartrow').remove();
     purchase_array ="";
     total_price = 0;
      document.getElementById("total_number").innerHTML = total_price; 
@@ -594,3 +434,4 @@ function clearAll(){
     
     
 }
+ 
