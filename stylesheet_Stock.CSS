@@ -137,7 +137,8 @@
 
 .headerMain {
     background-color: #de1b1b;
-    height: 147px;
+    height: 11vw;
+    display: block;
     width: 100%;
 }
 
@@ -151,28 +152,27 @@
 
 .navArea {
    
-    height: 147px; /*100*/
-    float: left;
     padding-left: -15px;
+    display: inline-block;
+    width: 100%;
     
 }
 
 .nav {
     list-style: none;
-    margin-top: 1%;
-    margin-left: 18%;
-    width: 100%;
+    display: inherit;
+    margin-left: 12vw;
 }
 
 .nav a, #viewDept{
     color: white;
     text-decoration: none;
-    font-size: 14pt;
+    font-size: 1.4vw;
     font-weight: 600;
    
 }
 
-ul li a:hover, ul li a:focus, #viewDept:hover, #viewDept:focus {
+ul li a:hover, ul li a:focus, #viewDept:hover, #viewDept:focus, #selectSV:hover, #selectEN:hover {
  cursor: pointer; 
  cursor: hand;
  color:#ffac42;
@@ -183,56 +183,79 @@ ul li a:hover, ul li a:focus, #viewDept:hover, #viewDept:focus {
 }
 
 .nav li {
-    float: left;
-    margin-left: 80px;
-    margin-top: 4%;
-    padding: 8px;
-    width: 140px;
-    height: 45px;
+    margin-left: 5vw;
+    margin-top: 4vw;
     text-align: center;
     white-space: nowrap;
-    padding-left: 0px;
+    display: inline-block;
+    margin-bottom: 2vw;
 }
 
-
+#userData {
+    margin-top: 4vw;
+}
 
 #textHeader span{
     color: #F29E20 !important;
     position: absolute;
     margin-left: -27%;
     margin-top: 25%;
-    font-size: 30pt;
+    font-size: 3vw;
     display: inline-block;
 }
 #textHeader {
       position: absolute;
-    font-size:40pt;
+    font-size:3vw;
     margin-left:2%;
-    margin-top: 1%;
+    margin-top: 2.5%;
     color:white;
 }
+#languageBar{   
+    display: inline-block;
+    margin: 3vw 3vw 0vw 3vw;
+    float: right;
+}
+#selectSV, #selectEN{
+    font-size: 2vw;
+    text-align: center;
+    color: #ffffff;
+    padding: .2vw .7vw;
+}
+#user_info{
+    margin: 2vw 0px 0 0px;
+    text-align: center;
+    color: #ffffff;
+    float: right;
+}
 #login_pic {
-    position:absolute;
-    margin-left:8.6%;
-    margin-top: 1.2%
+    width: 4vw;
+    height: 4vw;
  
 }
 #logout {
-    position:absolute;
-    margin-left: 9%;
-    margin-top: 7%;
-    font-size: 12pt;
+
+    font-size: 1.4vw;
     white-space: nowrap;
     text-decoration: underline;
+    color: #ffffff;
     
 }
 #login_id{
-    position:absolute;
-    margin-left:75.5%;
-    margin-top: 7%;
-    font-size: 16pt;
+    font-size: 1.4vw;
+    width: 6vw;
 }
 
+#dept { 
+    display: inline-block;
+    height: 5vw;
+    padding: 2.5vw 0 0 2vw;
+    font-size: 1.5vw;
+    color: #cc3700;
+    background-color: #ffe7c8;
+    font-weight: 600;
+    border: solid #f5a53e 2px;
+    display: none;
+}
 
 #edit_bev {
 padding: 5px;
@@ -265,11 +288,16 @@ padding: 5px;
     width:30%;
     display:inline-block;
     text-align: right;
+    float: right;
 }
-
-#name {
-    width: 70%;
+#count {
     display: inline-block;
+    float: left;
+    margin-left: 0.4vw;
+}
+#name {
+    display: inline-block;
+    float:left;
 }
 
 #beer_id {
@@ -294,25 +322,30 @@ margin: 1% 1% 1% 1%;
     color: white;
 }
 
-#submitStock {
+#submitStock, #cancel {
 	display: inline-block;
-    margin: 0 10px 20px 0;
+    margin: 0 2vw 3vw 3vw;
     padding: 8px 13px;
     font-family: 'Exo', sans-serif;
     font-size: 20px;
     color: #fff;
     background-color: #de1b1b;
     border: none;
-	
+	text-decoration: none;
 }
 
-#submitStock:hover, #clear:hover {
+a {
+    text-decoration: none;
+    color: #fff;
+}
+
+#submitStock:hover, #clear:hover, #cancel:hover {
     background-color: #c33333;
     cursor: pointer; 
     cursor: hand;
 }
 
-#submitStock:active, #clear:active {
+#submitStock:active, #clear:active, #cancel:active {
     background-color: #ab2d2d;
 }
 
@@ -360,7 +393,6 @@ margin: 1% 1% 1% 1%;
 
 #dept { 
     display: inline-block;
-    width: 100%;
     height: 5vw;
     padding: 2.5vw 0 0 2vw;
     font-size: 1.5vw;
