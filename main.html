@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <meta charset="utf-8">
     <title>Main</title>
     <link rel="stylesheet" type="text/css" href="css/stylesheet.CSS">
 
@@ -9,48 +10,53 @@
         * {margin: 0;padding: 0;}
     </style>
  	<script src="js/jquery-3.1.1.min.js"></script>
-    
+    <script src="js/jquery-ui-1.12.1.custom/jquery-ui.js"></script> <!-- This page uses the UI library -->
+    <script src="js/javascript_Dept.js"></script>
     <script src="js/main_script.js"></script>
+    <script src="js/translations.js"></script>
+    <!--<script src="js/AutoLogOut.js"></script>-->
  
-	<!--
-    <script src="js/api.js"></script>
+	
+    <!--<script src="js/api.js"></script>
     <script src="js/script_buybeer.js"></script>
     
 <script>pageLoaded(docLoaded);</script>-->
 </head>
 
-<body>
-<div class="bodyMain">
+<body class="bodyMain">
     <div class="headerMain">
-          <div id="textHeader">Jamaica<span>Inn</span></div>
-        <div class="container">
-            
+                   
         
             <div class="navArea">
-              
+              <div id="textHeader">Jamaica<span>Inn</span></div>
                 <ul class="nav">
                     
-        <li> <a  href="main.html" class="current"  >Beverages</a></li>
-		<li> <a href="history.html">Purchase History</a></li>
-              <div id="admin_buttons">     
-        <li>  <a href="allbeverages.html" >Manage Beverages</a></li>
-                <li>  <a href="#">Manage Users</a></li>
-                    </div>
-               
-                    
-                </ul>
-            <img src ="http://www.iconarchive.com/download/i93784/custom-icon-design/silky-line-user/user.ico" id="login_pic_main" alt="login" style="width:80px;height:80px"/>
-                <div id ="login_id_main" class="login_id"></div>
-                        <a href ="login.html" id="logout_main">log out</a>
+        <li> <a  href="main.html" class="current translatable" data-key = "beverages" class="current">Beverages</a></li>
+        <li> <a href="history.html" class= "translatable" data-key ="purchaseHistory">Purchase History</a></li>
+        <li> <div id="viewDept">Dept</div></li>
+        <div id="admin_buttons" style="display: inherit;">
+        <li> <a href="allbeverages.html" id="bev_admin" class ="translatable" data-key ="manageBeverages">Manage Beverages</a></li>
+        <li> <a href="users.html" id="users_admin" class="translatable" data-key ="manageUsers">Manage Users</a></li>
+        </div>
+        </ul>
+        <div id="languageBar">
+            <div id="selectSV" class="translate" data-lang="sv"><img src="http://cdn.countryflags.com/thumbs/sweden/flag-round-250.png" style="height: 2vw;width: 2vw;">SV</div>
+            <div id="selectEN" class="translate" data-lang="en"><img src="http://barnepalliasjon.no/wp-content/themes/ffb/images/english.png" style="height: 2vw;width: 2vw;">EN</div>
+
+        </div>
+        <div id="user_info" ">
+                    <img src ="http://www.iconarchive.com/download/i93784/custom-icon-design/silky-line-user/user.ico" id="login_pic" alt="login" >
+                    <div id ="login_id" class="login_id"></div>
+                        <a href ="login.html" id="logout">log out</a></div>
+
+                
             </div>
         </div>
-    </div>
-   
+    <div id="dept"></div>
 
-</div>
     
           <div class="dropdown">
-  <button onclick="myFunction()" class="dropbtn">Choose type of beer</button>
+  <button onclick="myFunction()" class="dropbtn translatable" data-key ="chooseTypeBeer">Choose type of beer</button>
   <div id="myDropdown" class="dropdown-content">
     <a href="#" id = Alc_button>Alcohol</a>
       
@@ -60,31 +66,31 @@
     </div>
    
 <div class="boxes">
-     <div id = "headline">These choices contain alcohol </div>
+     <div id = "headline" class="translatable" data-key="theseChoicesContainAlcohol"> </div>
 
  	<div class="boxContent" id="main">
         
 <form id ="aform">
 
 </form></div>
-    <div id = "headline">These choices are non-alcoholic </div>
+    <div id = "headline" class ="translatable" data-key="NonAlcoholic"> </div>
         <div class="boxContent" id="non-alcohol"></div>
 
       </div>
 
 <div id ="right_side">
-    <div id ="h4">Your cart</div>
+    <div id ="h4" class ="translatable" data-key ="yourCart">Your cart</div>
     <div id="cart">
         <div id ="text"></div>
     
     </div>
-    <div id="total">Your total: <div id="total_number">0</div> </div> 
+    <div id="total"><span class ="translatable" data-key ="yourtotal"></span><div id="total_number">0</div> </div> 
  
      <div id = "buy_button"> 
-        <button onclick="confirmPurchase()" class="dropbtn">BUY</button>
+        <button onclick="confirmPurchase()" class="dropbtn translatable" data-key = "buy">BUY</button>
     </div>
     <div id = "clear_button"> 
-        <button onclick="clearAll()" class="dropbtn">CLEAR</button>
+        <button onclick="clearAll()" class="dropbtn translatable" data-key = "clear">CLEAR</button>
     </div>
     
     </div>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Stock</title>
+    <link rel="stylesheet" type="text/css" href="css/stylesheet_Stock.CSS">
+
+
+    <style type="text/css">
+        * {margin: 0;padding: 0;}
+    </style>
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom/jquery-ui.js"></script> <!-- This page uses the UI library -->
+    <!-- <script src="js/jquery-ui-1.12.1.custom/jquery-ui.js"></script> -->
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
+    <script src="js/javascript_Dept.js"></script>
+	<script src="js/javascript_Stock.js"></script>
+</head>
+
+<body class="bodyMain">
+
+    <div class="headerMain">
+                   
+        
+            <div class="navArea">
+              <div id="textHeader">Jamaica<span>Inn</span></div>
+                <ul class="nav">
+                    
+        <li> <a  href="main.html">Beverages</a></li>
+        <li> <a href="history.html">Purchase History</a></li>
+        <li> <div id="viewDept">Dept</div></li>
+        <li> <a href="allbeverages.html" id="bev_admin" class="current">Manage Beverages</a></li>
+        <li> <a href="users.html" id="users_admin">Manage Users</a></li>
+        </ul>
+        <div id="languageBar">
+            <div id="selectSV" data-lang="sv"><img src="http://cdn.countryflags.com/thumbs/sweden/flag-round-250.png" style="height: 2vw;width: 2vw;">SV</div>
+            <div id="selectEN" data-lang="en"><img src="http://barnepalliasjon.no/wp-content/themes/ffb/images/english.png" style="height: 2vw;width: 2vw;">EN</div>
+
+        </div>
+        <div id="user_info" ">
+                    <img src ="http://www.iconarchive.com/download/i93784/custom-icon-design/silky-line-user/user.ico" id="login_pic" alt="login" >
+                    <div id ="login_id" class="login_id"></div>
+                        <a href ="login.html" id="logout">log out</a></div>
+
+                
+            </div>
+        </div>
+    <div id="dept"></div>
+
+
+    <div id="titles">
+    <div id="title">Inventory
+    <input id="search" type="text" placeholder="Search Name or ID"></input>
+    </div>
+    <div id="title">Stock
+            <button id="clear">Clear</button> 
+        </div>
+    </div>
+
+    <div>
+    <div id="inventory">
+    </div>
+    <div id="stock">
+    </div>
+    </div>
+    
+    <div style="text-align: center;">
+    <button id="submitStock">Update Stock</button>
+    <button id="cancel"><a href="allbeverages.html">Cancel</a></button>
+    </div>
+
+</body>
+</html>
