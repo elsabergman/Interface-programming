@@ -1,13 +1,13 @@
-
+// Lista snyggare i vår cart 
+// varför tar den bort den jag INTE klickar på????? Verkar som att den tar bort allt utom den jag vill.
 
 /*--global variables---*/
-  var bought_array = {};
 var total_price = 0;
 var name ="";
+var my_beer_id = "";
 var purchase_array = new Array;
-var nonAlc_names = new Array();
-var nonAlc_count = new Array();
-var nonAlc_price = new Array();
+
+  var beer_id = new Array();
 
 /*---main ---*/
 $(function (){ 
@@ -37,7 +37,7 @@ success: function(main){
     var names = new Array();
     var prices = new Array();
     var amounts = new Array();
-    var beer_id = new Array();
+  
     var namn_nonAlc = new Array();
   
     var buttons ="";
@@ -63,13 +63,15 @@ success: function(main) {
     });
     /*--- end call to get logged in user --* 
     /* Get arrays from localStorage */ 
+
     var BevStock = localStorage.getItem("count").split(',');
     var BevPrice = localStorage.getItem("prices").split(',');
     var BevName = localStorage.getItem("names").split(',');
+    var BevID = localStorage.getItem("ID").split(',');
     var NonAlcName = localStorage.getItem("NoAlcName").split(',');
     var NonAlcStock = localStorage.getItem("NoAlcStock").split(',');
      var NonAlcPrice = localStorage.getItem("NoAlcPrices").split(',');
-    
+
     
     var id_noAlc = 52;
     var inc_noAlc = 55;
@@ -101,7 +103,7 @@ success: function(main) {
 $main.append( '<div class="small_box">' +
              '<input type="text" class ="values" id="'+id_values+'" value="0"/>' +
  			'<div class="small_box_text">'+  BevName[i]+'</div>' +
- 			'<div class="small_box_text" id="'+beer_id[i]+"S"+'">'+ BevStock[i] + " left"+'</div> ' +  	
+ 			'<div class="small_box_text" id="'+BevID[i]+"Stock"+'">'+ BevStock[i] + " left"+'</div> ' +  	
  			'<div class="small_box_text">'+ "price: " + BevPrice[i]+ " kr" + '</div>' + '<input type="button" id="'+id_inc_button+'" class="btn_increase" value="+">' + '</input>' +
              '<input type="button" id="'+id_dec_button+'" class="btn_decrease" value="-">' +' </input>' + '</div>' ); 
              beer_count++;
@@ -125,50 +127,46 @@ $main.append( '<div class="small_box">' +
                              '<div class="small_box_text">'+  NonAlcStock[i] +  " left" + '</div> '   +	
                              '<div class="small_box_text">'+ NonAlcPrice[i] + " kr" + '</div>' + '<input type="button" id="'+inc_noAlc+'" class="btn_increase" value="+">' + '</input>' +
              '<input type="button" id="'+dec_noAlc+'" class="btn_decrease" value="-">' +' </input>' + '</div>');
-       
+    
       beer_count_nonAlc++;
       inc_noAlc++;
       dec_noAlc++;
       id_noAlc++;
-         names += NonAlcName[i] + ',' ;
-         amounts += NonAlcStock[i] + ',';
-         prices += NonAlcPrice[i] +',';
+    
          beer_id += its.beer_id +',';
         
      }
  
  });
-
-                    
-    
+      
  $('#55').click(function() {
              
-        incrementValue("52",beer_id[17],names[17],amounts[17], prices[17]);
+        incrementValue("52",beer_id[17],NonAlcName[0],NonAlcStock[0], NonAlcPrice[0]);
     });
      
     $('#58').click(function() {
        
-        decreaseValue("52",beer_id[17],names[17],amounts[17], prices[17]);
+        decreaseValue("52",beer_id[17],NonAlcName[0],NonAlcStock[0], NonAlcPrice[0]);
  
     });
      $('#56').click(function() {
         
-        incrementValue("53",beer_id[18],names[18],amounts[18], prices[18]);
+        incrementValue("53",beer_id[18],NonAlcName[1],NonAlcStock[1], NonAlcPrice[1]);
     });
      
     $('#59').click(function() {
       
-        decreaseValue("53",beer_id[18],names[18],amounts[18], prices[18]);
+        decreaseValue("53",beer_id[18],NonAlcName[1],NonAlcStock[1], NonAlcPrice[1]);
  
     });
      $('#57').click(function() {
        
-        incrementValue("54",beer_id[19],names[19],amounts[19], prices[19]);
+        incrementValue("54",beer_id[19],NonAlcName[2],NonAlcStock[2], NonAlcPrice[2]);
     });
      
     $('#60').click(function() {
    
-        decreaseValue("54",beer_id[19],names[19],amounts[19], prices[19]);
+        decreaseValue("54",beer_id[19],NonAlcName[2],NonAlcStock[2], NonAlcPrice[2]);
  
     });
     
@@ -183,7 +181,7 @@ $main.append( '<div class="small_box">' +
     
     prices = prices.split(",");
  
-    beer_id = beer_id.split(",");
+
 
   
 
@@ -389,31 +387,75 @@ window.onclick = function(event) {
       }
     }
   }
-    $("#nonAlc_button").click(function() {
+    /*---- still have some issues with this ---*/
+  $("#Alc_button").click(function(event){     
+        event.preventDefault();
+        $('html,body').animate({scrollTop:$("#main").offset().top - 59}, 800); 
+       
+   
+}); 
+
+    $("#nonAlc_button").click(function(event){     
+        event.preventDefault();
+        $('html,body').animate({scrollTop:$("#non-alcohol").offset().top - 59}, 800); 
+   
+}); 
+
     
-    $('html, .boxes').animate({
-        scrollTop: $("#non-alcohol").offset().top
-    }, 500);
-});
-    /* $("#Alc_button").click(function() {
-    
-    $('html, body').animate({
-        scrollTop: $("#non-alcohol").offset().top
- });   }, 500); */
+
 }
 
-    
 
-
-
-/*---confirm purchase. When click on BUY, the user can see what he/she bought, what the total was as well as new credit--*/
+/*---confirm purchase. When click on BUY, the user can see what he/she bought, what the total was as well as new credit. The new stock is then shown in the correct box--*/
 function confirmPurchase() {
+
+    //the stock of the available beers should change after buying something. 
+    var BevID = localStorage.getItem("ID").split(',');
+     var BevStock = localStorage.getItem("count").split(',');
+     var BevName = localStorage.getItem("names").split(',');
+    var NonAlcName = localStorage.getItem("NoAlcName").split(',');
+    var NonAlcStock = localStorage.getItem("NoAlcStock").split(',');
+   // purchase_array2 = purchase_array.split(",");
+    
+  console.log(localStorage.getItem("count"));
     
     
+ for(i=0; i<purchase_array.length-1; i++) {
+     index = BevName.indexOf(purchase_array[i]);
+alert(purchase_array.indexOf(NonAlcName[i]));
+     alert(BevName[index]);
+     alert(purchase_array[i]);
+     if ((purchase_array.indexOf(NonAlcName[i]) == -1) && (purchase_array[i] == BevName[index])) {
+         var count = BevStock[index];
+         if (count > 10) { //if stock is really more than 10
+             var new_count = 9;
+            BevStock[index] = new_count;
+         }else {
+         var new_count = count - 1; 
+         BevStock[index] = new_count;
+
+         }
+
+          document.getElementById(BevID[index]+"Stock").innerHTML = new_count +" left";
+       
+
+     } else if (purchase_array.indexOf(NonAlcName[i]) > -1) {
+         alert("HRJ");
+         var count = NonAlcStock[i];
+         if (count > 10){
+             var new_count = 9;
+             NonAlcStock[i] = new_count;
+         }
+            var new_count = count - 1; 
+         NonAlcStock[index] = new_count;
+     }
+      document.getElementById(BevID[index]+"Stock").innerHTML = new_count +" left";
+ }
 
     window.confirm("Purchase confirmed!\n\n Here is what you bought:\n\n" + purchase_array + "\nYour total was " + total_price +" kr");
     clearAll();
     purchase_array ="";
+     localStorage.setItem("count", BevStock);
     
 }
           
@@ -421,52 +463,47 @@ function confirmPurchase() {
 /*-- increase number of beers person wants to buy. increments number in value box by one and makes number red to make it easier for the customer to see that he/she has picked that certain beer. Also adds to total price. --*/
 function incrementValue(number, beer_id,namn, count, price)
 {
-    
-
+  
     
 var value = parseInt(document.getElementById(number).value, 10);
     value = isNaN(value) ? 0 : value;
-    if (count != 0) {
+if (count == 1 && (purchase_array.indexOf(namn) > -1)) { //if it is out of stock it cant be put in the cart
+    alert("this beer is now out of stock");
+    return;
+}
+    if (count > 0) {
     document.getElementById('text').innerHTML ="";
 
  if(value < count && count > 0){
-     count = count - 1;
+    
+
      document.getElementById(number).style.color = 'red';
        value++;
-      purchase_array += namn + ','  ;
-     purchase_array = purchase_array.split(',');
-     
-     /*LÄGG IN SÅ ANTALET ÄNDRAS I BOXEN OCKSÅ 
-     var BevStock = localStorage.getItem("count").split(',');
-     var BevName = localStorage.getItem("names").split(',');
-    
-    
-    var index = BevName.indexOf(count);
-     
-    BevStock[index] = count;
-    localStorage.setItem("count", BevStock);
-     alert(localStorage.getItem("count", BevStock));
-    document.getElementById(beer_id[index]+"S").innerHTML = count +"left";*/
-     
-
-     
+      purchase_array += namn + "," ;
+   
+     purchase_array = purchase_array.split(",");
+       alert(purchase_array);
     document.getElementById(number).value = value;
       $("#text").append(purchase_array); 
-  
+
    total_price += parseFloat(price);
      document.getElementById("total_number").innerHTML = total_price.toPrecision(3); 
       
  
  }
     }
+   
 
 }
 
 
 /*--decrease number of beers person wants to buy --*/
-function decreaseValue(number,beer_id, name,count,price, timesClicked)
+function decreaseValue(number,beer_id, name,count,price)
 {
- 
+   alert(purchase_array.length);
+    for(i=0; i<purchase_array.length; i++ ) {
+        alert(purchase_array[i]);
+    }
     var value = parseInt(document.getElementById(number).value, 10);
     value = isNaN(value) ? 0 : value;
     if (value-1 == 0) {
@@ -474,18 +511,25 @@ function decreaseValue(number,beer_id, name,count,price, timesClicked)
     }
     if( value > 0) {
           value--;
-
-      
-        var index = purchase_array.indexOf(name);
-     
+        if ((purchase_array.length)-1 < 2) {
+            purchase_array = "";
            
-               purchase_array.splice(index,1);
+        }
+        else { 
+            var index = purchase_array.indexOf(name);
+            alert(index);
+      
+        purchase_array =  purchase_array.splice(index,1);
+            alert(name);
+            
+        }
         document.getElementById('text').innerHTML = purchase_array;
            total_price -= parseFloat(price);
          document.getElementById("total_number").innerHTML = total_price.toPrecision(3);
         
             }
              document.getElementById(number).value = value;
+    my_beer_id = ""
         }
         
 /*-- clear button, removes all beers in the cart and resets the number in each box to zero as well as makes the numbers black again. Also sets the total amount to zero --*/
