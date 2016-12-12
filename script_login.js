@@ -1,12 +1,12 @@
 AllBevNames = new Array();
 AllBevStock = new Array();
 AllBevPrices = new Array();
-
+AllBevID = new Array();
 
 function connectionAPI(userID,password) {
 var apiTemp = new APIConnect(),
     userID = userID,
-    password = password 
+    password = password,
     btn = document.getElementById("loginform");
    apiTemp.setUser('jorass', 'jorass');
 btn.addEventListener('click', function(){ check(apiTemp, userID, password) });
@@ -84,12 +84,16 @@ $.each(login.payload, function(i, his)
     AllBevNames += his.namn + ',';
     AllBevStock += his.count +',';
     AllBevPrices += his.price + ',';
+    AllBevID += his.beer_id + ',';
+    
     
     
 });
     NoAlcNames = new Array();
 NoAlcStock = new Array();
 NoAlcPrices = new Array();
+    NonAlcID = new Array();
+
     $(function() {
     $.each(login.payload, function(i, its)
 { 
@@ -106,17 +110,19 @@ success: function(login) {
       NoAlcNames += its.namn +',';
       NoAlcStock += its.count + ',';
       NoAlcPrices += its.price + ',';
+      NonAlcID += its.beer_id + ',';
 
   }
       localStorage.setItem("NoAlcName", NoAlcNames);
         localStorage.setItem("NoAlcStock", NoAlcStock);
         localStorage.setItem("NoAlcPrices", NoAlcPrices);
+      localStorage.setItem('NonAlcID', NonAlcID);
 }
        
     });
             
     });
-     alert(NoAlcNames);
+
       
         
       });
@@ -124,6 +130,8 @@ success: function(login) {
     localStorage.setItem('count', AllBevStock);
     localStorage.setItem('prices',AllBevPrices);
     localStorage.setItem('names', AllBevNames);
+     localStorage.setItem('ID', AllBevID);
+   
     
 
 }
