@@ -191,12 +191,42 @@ $main.append( '<div class="small_box" data-value="' + its.beer_id + '">' +
         var beerName = $("#"+id+"Name").text();
         if ((value+1) <= stockCount )
         {
+            if (value == 0)
+            {
             $("#"+id).val(value+1);
-             $('#cart').append('<div class="cartrow">' +
-                              '<div class="cartcol">'+beerName+'</div>' +
+             $('#cart').append('<div class="cartrow" id="'+id+'" >' +
+                              '<div id="cartname" class="cartcol">'+beerName+'</div>' +
+                              '<div id="cartamount" class="'+id+'">x '+(value+1)+'</div>' +
                               '</div>')
+            }
+            else if (value > 0)
+            {
+                $("#"+id).val(value+1);
+                $('#cartamount.'+id).text('x '+(value+1));
+            }
 
 
+        }
+        
+    });
+
+    $('.btn_decrease').click(function() {
+        var id = $(this).attr('id');
+        var value = parseInt($("#"+id).val()); //get textbox value
+        var stockCount = parseInt($("#"+id+"Stock").data('value'));
+        var beerName = $("#"+id+"Name").text();
+        if ((value-1) >= 0)
+        {
+            if(value == 1)
+            {
+            $("#"+id).val(value-1);
+            $('#'+id+'.cartrow').remove();
+            }
+            else if (value > 1)
+            {
+                $("#"+id).val(value-1);
+                $('#cartamount.'+id).text('x '+(value-1));
+            }
         }
         
     });

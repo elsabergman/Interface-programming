@@ -400,6 +400,21 @@ padding: 5px;
     
     
 }
+.cartrow {
+    display: block;
+    height: 10%;
+    position: relative;
+    float: left;
+    width: 100%;
+}
+#cartname{
+    float: left; 
+    margin-left: .3vw;
+}
+#cartamount{
+    float:right;
+    margin-right: 0.3vw
+}
 #cart {
     border: 1px dotted;
     width: 250px;
