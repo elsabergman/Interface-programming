@@ -25,8 +25,8 @@ var password = localStorage.getItem('password');
 
 $.ajax({
     
-	method: 'GET',
-	url: 'http://pub.jamaica-inn.net/fpdb/api.php?username=' + username + '&password=' + password + '&action=inventory_get',
+    method: 'GET',
+    url: 'http://pub.jamaica-inn.net/fpdb/api.php?username=' + username + '&password=' + password + '&action=inventory_get',
 
 success: function(main){
 //console.log(history);
@@ -50,8 +50,8 @@ success: function(main){
     $(function() {
         $.ajax({
   
-	method: 'GET',
-	url: 'http://pub.jamaica-inn.net/fpdb/api.php?username=' + username + '&password=' + password + '&action=iou_get',
+    method: 'GET',
+    url: 'http://pub.jamaica-inn.net/fpdb/api.php?username=' + username + '&password=' + password + '&action=iou_get',
 
 success: function(main) {
     var first_name = main.payload[0].first_name;
@@ -81,7 +81,7 @@ success: function(main) {
     $.each(main.payload, function(i, its)  
            
 {     
-     if ( (BevStock[i] <200 && BevStock[i] > 0) && (BevName[i]!= "")  && (beer_count < 17)) {
+     if ( (BevStock[i] <200 && BevStock[i] > 0) && (BevName[i]!= "")  && (beer_count < 20)) {
          
          names += BevName[i] + ',' ;
          prices += BevPrice[i] +',';
@@ -100,12 +100,13 @@ success: function(main) {
         //add in all the needed input elements
 
 /*add to vending machine */         
-$main.append( '<div class="small_box">' +
-             '<input type="text" class ="values" id="'+id_values+'" value="0"/>' +
- 			'<div class="small_box_text">'+  BevName[i]+'</div>' +
- 			'<div class="small_box_text" id="'+BevID[i]+"Stock"+'">'+ BevStock[i] + " left"+'</div> ' +  	
- 			'<div class="small_box_text">'+ "price: " + BevPrice[i]+ " kr" + '</div>' + '<input type="button" id="'+id_inc_button+'" class="btn_increase" value="+">' + '</input>' +
-             '<input type="button" id="'+id_dec_button+'" class="btn_decrease" value="-">' +' </input>' + '</div>' ); 
+$main.append( '<div class="small_box" data-value="' + its.beer_id + '">' +
+            '<input type="text" class ="values" id="'+its.beer_id+'" value="0"/>' +
+            '<div class="small_box_text" id="'+its.beer_id+'Name">'+  BevName[i]+'</div>' +
+            '<div class="small_box_text" id="'+BevID[i]+"Stock"+'" data-value="'+ BevStock[i] +'">'+ BevStock[i] + " left"+'</div> ' +     
+            '<div class="small_box_text">'+ "price: " + BevPrice[i]+ " kr" + '</div>' + 
+            '<input type="button" id="'+its.beer_id+'" class="btn_increase" value="+"></input>' +
+            '<input type="button" id="'+its.beer_id+'" class="btn_decrease" value="-"></input></div>' ); 
              beer_count++;
         id_values++;
          id_inc_button++;
@@ -124,7 +125,7 @@ $main.append( '<div class="small_box">' +
          $('#non-alcohol').append('<div class="small_box">' +
                                    '<input type="text" class ="values" id="'+id_noAlc+'" value="0"/>' +
                              '<div class="small_box_text">' + NonAlcName[i]+'</div>' +
-                             '<div class="small_box_text">'+  NonAlcStock[i] +  " left" + '</div> '   +	
+                             '<div class="small_box_text">'+  NonAlcStock[i] +  " left" + '</div> '   + 
                              '<div class="small_box_text">'+ NonAlcPrice[i] + " kr" + '</div>' + '<input type="button" id="'+inc_noAlc+'" class="btn_increase" value="+">' + '</input>' +
              '<input type="button" id="'+dec_noAlc+'" class="btn_decrease" value="-">' +' </input>' + '</div>');
     
@@ -183,6 +184,22 @@ $main.append( '<div class="small_box">' +
  
 
 
+    $('.btn_increase').click(function() {
+        var id = $(this).attr('id');
+        var value = parseInt($("#"+id).val()); //get textbox value
+        var stockCount = parseInt($("#"+id+"Stock").data('value'));
+        var beerName = $("#"+id+"Name").text();
+        if ((value+1) <= stockCount )
+        {
+            $("#"+id).val(value+1);
+             $('#cart').append('<div class="cartrow">' +
+                              '<div class="cartcol">'+beerName+'</div>' +
+                              '</div>')
+
+
+        }
+        
+    });
   
 
     $('#18').click(function() {
@@ -282,6 +299,7 @@ $main.append( '<div class="small_box">' +
 
         incrementValue("10",beer_id[9],names[9],amounts[9],prices[9]);
     });
+
      
     $('#44').click(function() {
     
@@ -419,7 +437,7 @@ function confirmPurchase() {
     
   console.log(localStorage.getItem("count"));
     
-    
+
  for(i=0; i<purchase_array.length-1; i++) {
      index = BevName.indexOf(purchase_array[i]);
 alert(purchase_array.indexOf(NonAlcName[i]));
