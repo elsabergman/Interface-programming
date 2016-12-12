@@ -89,10 +89,8 @@ $.each(login.payload, function(i, his)
     
     
 });
-    NoAlcNames = new Array();
-NoAlcStock = new Array();
-NoAlcPrices = new Array();
-    NonAlcID = new Array();
+    AllBevFlag = new Array();
+
 
     $(function() {
     $.each(login.payload, function(i, its)
@@ -107,16 +105,17 @@ success: function(login) {
   var alcohol = login.payload[0].alkoholhalt;
     console.log(login.payload[0].alkoholhalt);
   if(  (alcohol == "0%" || alcohol == "0.5%") )  {
-      NoAlcNames += its.namn +',';
-      NoAlcStock += its.count + ',';
-      NoAlcPrices += its.price + ',';
-      NonAlcID += its.beer_id + ',';
+      
+      AllBevFlag[i] = 1; //if 1 --> alcoholic
+      
+      else {
+          AllBevFlag[i] = 0; // if 0 --> non-alcoholic
+      }
+
 
   }
-      localStorage.setItem("NoAlcName", NoAlcNames);
-        localStorage.setItem("NoAlcStock", NoAlcStock);
-        localStorage.setItem("NoAlcPrices", NoAlcPrices);
-      localStorage.setItem('NonAlcID', NonAlcID);
+      localStorage.setItem("AllBevFlag", AllBevFlag);
+
 }
        
     });
@@ -132,8 +131,6 @@ success: function(login) {
     localStorage.setItem('names', AllBevNames);
      localStorage.setItem('ID', AllBevID);
    
-    
-
 }
 });
 });
